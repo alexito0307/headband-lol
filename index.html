@@ -7,7 +7,6 @@
     --bg:#091428;
     --bg2:#06101f;
     --panel:#0a2933;
-    --panel2:#0e3744;
     --line:#1e2d3a;
     --gold:#c8aa6e;
     --gold-bright:#f0e6d2;
@@ -15,14 +14,11 @@
     --hex:#0ac8b9;
     --correct:#0fd18a;
     --skip:#e0902f;
-    --danger:#e0473e;
     --muted:#86a0ad;
   }
 
   *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
-
   html,body{ height:100%; background:var(--bg2); }
-
   body{
     font-family:"Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
     color:var(--gold-bright);
@@ -30,7 +26,6 @@
     -webkit-user-select:none; user-select:none;
     touch-action:manipulation;
   }
-
   .display{ font-family:"Cinzel", Georgia, "Times New Roman", serif; }
 
   .app{
@@ -43,217 +38,123 @@
     overflow:hidden;
   }
 
-  /* ornamental gold frame (signature) */
+  /* ornamental gold frame */
   .frame{ position:absolute; inset:0; pointer-events:none; z-index:6; transition:opacity .4s ease; }
-  .corner{ position:absolute; width:34px; height:34px; }
+  .corner{ position:absolute; width:30px; height:30px; }
   .corner::before, .corner::after{ content:""; position:absolute; background:var(--gold); opacity:.85; }
   .corner::before{ width:100%; height:2px; }
   .corner::after{ width:2px; height:100%; }
   .corner .dot{ position:absolute; width:6px; height:6px; background:var(--gold); transform:rotate(45deg); box-shadow:0 0 8px rgba(200,170,110,.6); }
-  .corner.tl{ top:14px; left:14px; }
-  .corner.tl::before{ top:0; left:0; } .corner.tl::after{ top:0; left:0; } .corner.tl .dot{ top:-2px; left:-2px; }
-  .corner.tr{ top:14px; right:14px; }
-  .corner.tr::before{ top:0; right:0; } .corner.tr::after{ top:0; right:0; } .corner.tr .dot{ top:-2px; right:-2px; }
-  .corner.bl{ bottom:14px; left:14px; }
-  .corner.bl::before{ bottom:0; left:0; } .corner.bl::after{ bottom:0; left:0; } .corner.bl .dot{ bottom:-2px; left:-2px; }
-  .corner.br{ bottom:14px; right:14px; }
-  .corner.br::before{ bottom:0; right:0; } .corner.br::after{ bottom:0; right:0; } .corner.br .dot{ bottom:-2px; right:-2px; }
-  .app.playing .frame{ opacity:.18; }
+  .corner.tl{ top:14px; left:14px; } .corner.tl::before,.corner.tl::after{ top:0; left:0; } .corner.tl .dot{ top:-2px; left:-2px; }
+  .corner.tr{ top:14px; right:14px; } .corner.tr::before,.corner.tr::after{ top:0; right:0; } .corner.tr .dot{ top:-2px; right:-2px; }
+  .corner.bl{ bottom:14px; left:14px; } .corner.bl::before,.corner.bl::after{ bottom:0; left:0; } .corner.bl .dot{ bottom:-2px; left:-2px; }
+  .corner.br{ bottom:14px; right:14px; } .corner.br::before,.corner.br::after{ bottom:0; right:0; } .corner.br .dot{ bottom:-2px; right:-2px; }
+  .app.playing .frame{ opacity:.16; }
 
-  .screen{
-    position:absolute; inset:0;
-    display:none;
-    flex-direction:column;
-    align-items:center;
-    padding:48px 22px 38px;
-    overflow-y:auto;
-  }
+  .screen{ position:absolute; inset:0; display:none; flex-direction:column; }
   .screen.active{ display:flex; }
 
   /* ---------- START ---------- */
-  #start{ justify-content:center; text-align:center; gap:0; }
-  .eyebrow{
-    font-size:.72rem; letter-spacing:.42em; text-transform:uppercase;
-    color:var(--hex); margin-bottom:14px; padding-left:.42em; font-weight:600;
-  }
+  #start{ align-items:center; justify-content:center; text-align:center; padding:40px 24px; }
+  .eyebrow{ font-size:.72rem; letter-spacing:.42em; text-transform:uppercase; color:var(--hex); margin-bottom:14px; padding-left:.42em; font-weight:600; }
   .title{
-    font-size:clamp(2.8rem, 16vw, 4.6rem); font-weight:900; line-height:.92;
-    letter-spacing:.02em; color:var(--gold-bright);
+    font-size:clamp(2.9rem, 17vw, 4.8rem); font-weight:900; line-height:.92; letter-spacing:.02em; color:var(--gold-bright);
     text-shadow:0 0 28px rgba(10,200,185,.18), 0 2px 0 rgba(0,0,0,.4);
   }
   .title .g{ color:var(--gold); }
-  .rule{ display:flex; align-items:center; gap:12px; margin:18px 0 6px; color:var(--gold-dim); }
-  .rule .ln{ width:46px; height:1px; background:linear-gradient(90deg, transparent, var(--gold)); }
+  .rule{ display:flex; align-items:center; gap:12px; margin:20px 0 8px; }
+  .rule .ln{ width:48px; height:1px; background:linear-gradient(90deg, transparent, var(--gold)); }
   .rule .ln.r{ background:linear-gradient(90deg, var(--gold), transparent); }
   .rule .di{ width:7px; height:7px; background:var(--gold); transform:rotate(45deg); }
-  .subtitle{
-    font-size:.96rem; color:var(--muted); letter-spacing:.06em;
-    text-transform:uppercase; margin-bottom:30px;
-  }
+  .subtitle{ font-size:.95rem; color:var(--muted); letter-spacing:.07em; text-transform:uppercase; margin-bottom:38px; }
 
-  .pick-label{ font-size:.74rem; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
-  .times{ display:flex; gap:10px; margin-bottom:26px; }
-  .chip{
-    background:rgba(10,41,51,.7); border:1px solid var(--line); color:var(--gold-bright);
-    padding:12px 16px; border-radius:4px; font-size:1rem; font-weight:700; letter-spacing:.04em;
-    cursor:pointer; transition:.15s; min-width:74px;
-  }
-  .chip .s{ display:block; font-size:.6rem; letter-spacing:.18em; color:var(--muted); font-weight:600; margin-top:2px; }
-  .chip.sel{ border-color:var(--gold); background:rgba(200,170,110,.12); box-shadow:0 0 0 1px var(--gold) inset, 0 0 18px rgba(200,170,110,.15); }
-  .chip.sel .s{ color:var(--gold); }
-
-  .btn{
-    font-family:inherit; cursor:pointer; border:none; transition:.18s;
-    letter-spacing:.14em; text-transform:uppercase; font-weight:700;
-  }
+  .btn{ font-family:inherit; cursor:pointer; border:none; transition:.16s; letter-spacing:.14em; text-transform:uppercase; font-weight:700; }
   .btn-primary{
-    background:linear-gradient(180deg, #c8aa6e, #a98f4f);
-    color:#0a1a22; font-size:1.05rem; padding:17px 50px; border-radius:4px;
+    background:linear-gradient(180deg, #c8aa6e, #a98f4f); color:#0a1a22; font-size:1.08rem; padding:18px 56px; border-radius:5px;
     box-shadow:0 6px 24px rgba(200,170,110,.28), 0 0 0 1px rgba(240,230,210,.25) inset;
   }
   .btn-primary:active{ transform:translateY(2px); box-shadow:0 2px 12px rgba(200,170,110,.3); }
 
-  .how-toggle{
-    margin-top:26px; background:none; border:none; color:var(--muted);
-    font-family:inherit; font-size:.82rem; letter-spacing:.1em; cursor:pointer;
-    text-transform:uppercase; border-bottom:1px dotted var(--gold-dim); padding-bottom:3px;
-  }
-  .how{
-    max-width:440px; margin:20px auto 0; text-align:left; display:none;
-    background:rgba(6,16,31,.6); border:1px solid var(--line); border-left:2px solid var(--gold);
-    border-radius:4px; padding:18px 20px;
-  }
+  .how-toggle{ margin-top:30px; background:none; border:none; color:var(--muted); font-family:inherit; font-size:.82rem; letter-spacing:.1em; cursor:pointer; text-transform:uppercase; border-bottom:1px dotted var(--gold-dim); padding-bottom:3px; }
+  .how{ max-width:430px; margin:22px auto 0; text-align:left; display:none; background:rgba(6,16,31,.6); border:1px solid var(--line); border-left:2px solid var(--gold); border-radius:5px; padding:18px 20px; }
   .how.open{ display:block; }
   .how h3{ font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
   .how ol{ list-style:none; counter-reset:s; }
   .how li{ counter-increment:s; position:relative; padding:7px 0 7px 30px; font-size:.92rem; line-height:1.45; color:#d6dde2; }
-  .how li::before{
-    content:counter(s); position:absolute; left:0; top:7px;
-    width:20px; height:20px; border:1px solid var(--gold-dim); color:var(--gold);
-    border-radius:50%; font-size:.7rem; display:flex; align-items:center; justify-content:center; font-weight:700;
-  }
+  .how li::before{ content:counter(s); position:absolute; left:0; top:6px; width:20px; height:20px; border:1px solid var(--gold-dim); color:var(--gold); border-radius:50%; font-size:.7rem; display:flex; align-items:center; justify-content:center; font-weight:700; }
   .how b{ color:var(--gold-bright); }
-
-  .src-note{ margin-top:18px; font-size:.66rem; color:#4f6573; letter-spacing:.06em; }
+  .src-note{ margin-top:22px; font-size:.66rem; color:#4f6573; letter-spacing:.06em; }
 
   /* ---------- COUNTDOWN ---------- */
-  #count{ justify-content:center; text-align:center; }
+  #count{ align-items:center; justify-content:center; text-align:center; padding:24px; }
   .count-pre{ font-size:1.05rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
-  .count-sub{ font-size:.9rem; color:var(--muted); margin-bottom:34px; max-width:300px; line-height:1.4; }
-  .count-num{
-    font-size:clamp(7rem, 40vw, 12rem); font-weight:900; line-height:1; color:var(--gold-bright);
-    text-shadow:0 0 40px rgba(10,200,185,.3);
-  }
-  .count-num.pop{ animation:pop .9s ease; }
-  @keyframes pop{ 0%{ transform:scale(.4); opacity:0; } 25%{ transform:scale(1.05); opacity:1; } 70%{ transform:scale(1); opacity:1; } 100%{ transform:scale(1.25); opacity:0; } }
+  .count-sub{ font-size:.9rem; color:var(--muted); margin-bottom:36px; max-width:300px; line-height:1.4; }
+  .count-num{ font-size:clamp(7rem, 42vw, 12rem); font-weight:900; line-height:1; color:var(--gold-bright); text-shadow:0 0 40px rgba(10,200,185,.3); }
+  .count-num.pop{ animation:pop .85s ease; }
+  @keyframes pop{ 0%{ transform:scale(.4); opacity:0; } 25%{ transform:scale(1.05); opacity:1; } 70%{ transform:scale(1); opacity:1; } 100%{ transform:scale(1.22); opacity:0; } }
 
   /* ---------- GAME ---------- */
-  #game{ padding:0; }
-  .champ-img{
-    position:absolute; inset:0; width:100%; height:100%;
-    object-fit:cover; object-position:center 18%; z-index:0; background:#06101f;
-  }
-  .champ-img.reveal{ animation:reveal .5s ease; }
-  @keyframes reveal{ from{ transform:scale(1.06); opacity:.3; } to{ transform:scale(1); opacity:1; } }
-  .scrim-top{ position:absolute; top:0; left:0; right:0; height:200px; z-index:1;
-    background:linear-gradient(180deg, rgba(6,16,31,.92), transparent); pointer-events:none; }
-  .scrim-bot{ position:absolute; bottom:0; left:0; right:0; height:300px; z-index:1;
-    background:linear-gradient(0deg, rgba(6,16,31,.96) 12%, transparent); pointer-events:none; }
+  #game{ align-items:stretch; justify-content:flex-start; }
 
-  .img-fallback{
-    position:absolute; inset:0; z-index:0; display:none; flex-direction:column;
-    align-items:center; justify-content:center; gap:10px; background:var(--bg);
-    color:var(--muted); font-size:.85rem; letter-spacing:.1em; text-transform:uppercase;
+  .game-top{
+    position:absolute; top:0; left:0; right:0; z-index:5;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:max(14px, env(safe-area-inset-top)) 16px 12px;
+    background:linear-gradient(180deg, rgba(6,16,31,.82), transparent);
   }
+  .quit{ background:rgba(6,16,31,.5); border:1px solid var(--line); color:var(--muted); font-family:inherit; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; padding:9px 14px; border-radius:5px; cursor:pointer; backdrop-filter:blur(2px); }
+  .score-pill{ background:rgba(6,16,31,.5); border:1px solid var(--gold-dim); color:var(--gold); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; padding:9px 14px; border-radius:5px; font-weight:700; backdrop-filter:blur(2px); }
 
-  .tapzones{ position:absolute; inset:0; z-index:2; display:flex; }
-  .tz{ flex:1; }
-  .tz-hint{
-    position:absolute; bottom:120px; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--muted); opacity:0; transition:opacity .4s; z-index:3; pointer-events:none;
-  }
-  .tz-hint.l{ left:24px; } .tz-hint.r{ right:24px; }
-  .app.show-hints .tz-hint{ opacity:.7; }
+  .img-area{ position:relative; flex:1 1 auto; min-height:0; overflow:hidden; background:#06101f; }
+  .champ-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; background:#06101f; }
+  .champ-img.reveal{ animation:reveal .45s ease; }
+  @keyframes reveal{ from{ transform:scale(1.05); opacity:.35; } to{ transform:scale(1); opacity:1; } }
+  .img-fallback{ position:absolute; inset:0; z-index:1; display:none; align-items:center; justify-content:center; background:var(--bg); color:var(--muted); font-size:.85rem; letter-spacing:.1em; text-transform:uppercase; }
+  .img-fade{ position:absolute; left:0; right:0; bottom:0; height:44%; z-index:2; background:linear-gradient(0deg, var(--bg2) 4%, rgba(9,20,40,.55) 48%, transparent); pointer-events:none; }
+  .name-band{ position:absolute; left:0; right:0; bottom:0; z-index:3; padding:0 20px 16px; text-align:center; pointer-events:none; }
+  .champ-name{ font-weight:900; font-size:clamp(2rem, 9.5vw, 3.4rem); line-height:1.02; color:var(--gold-bright); text-shadow:0 2px 18px rgba(0,0,0,.9), 0 0 30px rgba(0,0,0,.7); }
+  .champ-tag{ margin-top:7px; font-size:.72rem; letter-spacing:.26em; text-transform:uppercase; color:var(--gold); opacity:.85; }
 
-  .topbar{ position:absolute; top:0; left:0; right:0; z-index:4; display:flex; align-items:center; justify-content:space-between; padding:18px 18px 0; }
-  .quit{
-    background:rgba(6,16,31,.55); border:1px solid var(--line); color:var(--muted);
-    font-family:inherit; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
-    padding:8px 13px; border-radius:4px; cursor:pointer; backdrop-filter:blur(2px);
+  .controls{ flex:0 0 auto; display:flex; gap:12px; padding:14px 16px max(20px, env(safe-area-inset-bottom)); }
+  .ctrl{
+    flex:1; border:none; cursor:pointer; font-family:inherit; font-weight:800; font-size:1.12rem;
+    letter-spacing:.05em; text-transform:uppercase; padding:22px 8px; border-radius:7px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    transition:transform .12s, filter .12s;
   }
-  .score-pill{
-    background:rgba(6,16,31,.55); border:1px solid var(--gold-dim); color:var(--gold);
-    font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; padding:8px 13px; border-radius:4px;
-    font-weight:700; backdrop-filter:blur(2px);
-  }
+  .ctrl:active{ transform:translateY(2px); }
+  .ctrl .ic{ font-size:1.5rem; line-height:1; }
+  .ctrl-skip{ background:linear-gradient(180deg,#3a2a18,#281d11); color:var(--skip); border:1px solid rgba(224,144,47,.45); }
+  .ctrl-ok{ background:linear-gradient(180deg,#12d893,#0a9c66); color:#04231a; box-shadow:0 6px 20px rgba(15,209,138,.22); }
 
-  .timer-wrap{ position:absolute; top:64px; left:50%; transform:translateX(-50%); z-index:3; pointer-events:none; }
-  .timer{
-    width:78px; height:78px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    background:
-      radial-gradient(closest-side, rgba(6,16,31,.92) 78%, transparent 80% 100%),
-      conic-gradient(var(--gold) var(--p,100%), rgba(255,255,255,.08) 0);
-  }
-  .timer.low{ background:
-      radial-gradient(closest-side, rgba(6,16,31,.92) 78%, transparent 80% 100%),
-      conic-gradient(var(--danger) var(--p,100%), rgba(255,255,255,.08) 0); }
-  .timer .t{ font-size:1.7rem; font-weight:900; color:var(--gold-bright); font-family:"Cinzel", serif; }
-  .timer.low .t{ color:#ffd9d4; }
-
-  .name-wrap{ position:absolute; bottom:0; left:0; right:0; z-index:3; padding:0 22px 46px; text-align:center; pointer-events:none; }
-  .champ-name{
-    font-family:"Cinzel", Georgia, serif; font-weight:900;
-    font-size:clamp(2rem, 9.5vw, 3.4rem); line-height:1.02; color:var(--gold-bright);
-    text-shadow:0 2px 18px rgba(0,0,0,.85), 0 0 30px rgba(0,0,0,.6);
-  }
-  .champ-tag{ margin-top:8px; font-size:.74rem; letter-spacing:.26em; text-transform:uppercase; color:var(--gold); opacity:.85; }
-
-  .flash{
-    position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center;
-    opacity:0; pointer-events:none;
-  }
+  .flash{ position:absolute; inset:0; z-index:8; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; }
   .flash .word{ font-family:"Cinzel", serif; font-weight:900; font-size:clamp(2.4rem, 13vw, 4.5rem); letter-spacing:.04em; }
   .flash.go{ animation:flash .5s ease; }
   @keyframes flash{ 0%{ opacity:1; transform:scale(.85);} 60%{ opacity:1; transform:scale(1);} 100%{ opacity:0; transform:scale(1.05);} }
-  .flash.correct{ background:radial-gradient(circle, rgba(15,209,138,.35), rgba(6,16,31,.55)); }
+  .flash.correct{ background:radial-gradient(circle, rgba(15,209,138,.32), rgba(6,16,31,.5)); }
   .flash.correct .word{ color:var(--correct); text-shadow:0 0 30px rgba(15,209,138,.6); }
-  .flash.skip{ background:radial-gradient(circle, rgba(224,144,47,.3), rgba(6,16,31,.55)); }
+  .flash.skip{ background:radial-gradient(circle, rgba(224,144,47,.28), rgba(6,16,31,.5)); }
   .flash.skip .word{ color:var(--skip); text-shadow:0 0 26px rgba(224,144,47,.5); }
 
   /* ---------- RESULTS ---------- */
-  #results{ justify-content:flex-start; text-align:center; }
-  .res-eyebrow{ font-size:.74rem; letter-spacing:.3em; text-transform:uppercase; color:var(--hex); margin-bottom:10px; }
-  .res-big{ font-family:"Cinzel", serif; font-weight:900; color:var(--gold-bright); line-height:1; }
-  .res-num{ font-size:clamp(4rem, 26vw, 7rem); color:var(--gold); display:block; text-shadow:0 0 30px rgba(200,170,110,.25); }
-  .res-of{ font-size:1.05rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin:6px 0 4px; }
+  #results{ align-items:center; justify-content:flex-start; text-align:center; padding:max(40px, env(safe-area-inset-top)) 22px max(24px, env(safe-area-inset-bottom)); overflow-y:auto; }
+  .res-eyebrow{ font-size:.74rem; letter-spacing:.3em; text-transform:uppercase; color:var(--hex); margin-bottom:8px; }
+  .res-num{ font-family:"Cinzel", serif; font-weight:900; font-size:clamp(4rem, 26vw, 7rem); color:var(--gold); display:block; line-height:1; text-shadow:0 0 30px rgba(200,170,110,.25); }
+  .res-of{ font-size:1.02rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin:6px 0 4px; }
   .res-tagline{ font-size:.92rem; color:var(--gold-bright); margin-bottom:26px; max-width:340px; line-height:1.4; }
-
-  .res-grid{
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(64px,1fr));
-    gap:8px; width:100%; max-width:440px; margin-bottom:28px;
-  }
-  .res-card{ position:relative; border-radius:4px; overflow:hidden; border:1px solid var(--line); aspect-ratio:1; background:#06101f; }
-  .res-card img{ width:100%; height:100%; object-fit:cover; object-position:center 20%; }
+  .res-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(64px,1fr)); gap:8px; width:100%; max-width:440px; margin-bottom:28px; }
+  .res-card{ position:relative; border-radius:5px; overflow:hidden; border:1px solid var(--line); aspect-ratio:1; background:#06101f; }
+  .res-card img{ width:100%; height:100%; object-fit:cover; object-position:center top; }
   .res-card .mark{ position:absolute; top:3px; right:3px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:900; color:#06101f; }
   .res-card.ok .mark{ background:var(--correct); }
   .res-card.no .mark{ background:var(--skip); }
   .res-card.no img{ filter:grayscale(.7) brightness(.7); }
-  .res-card .nm{ position:absolute; bottom:0; left:0; right:0; font-size:.52rem; padding:6px 3px 3px; background:linear-gradient(0deg, rgba(6,16,31,.95), transparent); color:#cdd6db; letter-spacing:.02em; line-height:1.1; }
-
-  .res-actions{ display:flex; flex-direction:column; gap:12px; width:100%; max-width:300px; padding-bottom:20px; }
-  .btn-ghost{
-    background:rgba(10,41,51,.5); border:1px solid var(--gold-dim); color:var(--gold);
-    padding:14px; border-radius:4px; font-size:.92rem;
-  }
+  .res-card .nm{ position:absolute; bottom:0; left:0; right:0; font-size:.52rem; padding:6px 3px 3px; background:linear-gradient(0deg, rgba(6,16,31,.95), transparent); color:#cdd6db; line-height:1.1; }
+  .res-actions{ display:flex; flex-direction:column; gap:12px; width:100%; max-width:300px; }
+  .btn-ghost{ background:rgba(10,41,51,.5); border:1px solid var(--gold-dim); color:var(--gold); padding:14px; border-radius:5px; font-size:.92rem; }
   .btn-ghost:active{ transform:translateY(2px); }
 
-  .toast{
-    position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:rgba(10,41,51,.95); border:1px solid var(--gold); color:var(--gold-bright);
-    padding:11px 20px; border-radius:5px; font-size:.85rem; letter-spacing:.05em; z-index:30;
-    opacity:0; transition:.3s; pointer-events:none;
-  }
+  .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px); background:rgba(10,41,51,.95); border:1px solid var(--gold); color:var(--gold-bright); padding:11px 20px; border-radius:6px; font-size:.85rem; letter-spacing:.05em; z-index:30; opacity:0; transition:.3s; pointer-events:none; }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
   @media (prefers-reduced-motion: reduce){
@@ -263,7 +164,7 @@
 </style>
 
 <div class="app" id="app">
-  <div class="frame" id="frame">
+  <div class="frame">
     <span class="corner tl"><span class="dot"></span></span>
     <span class="corner tr"><span class="dot"></span></span>
     <span class="corner bl"><span class="dot"></span></span>
@@ -276,28 +177,17 @@
     <h1 class="title display">HEAD<span class="g">BANDS</span></h1>
     <div class="rule"><span class="ln"></span><span class="di"></span><span class="ln r"></span></div>
     <div class="subtitle">Campeones de League of Legends</div>
-
-    <div class="pick-label">Duracion de la ronda</div>
-    <div class="times" id="times">
-      <button class="chip" data-t="60">60<span class="s">seg</span></button>
-      <button class="chip sel" data-t="90">90<span class="s">seg</span></button>
-      <button class="chip" data-t="120">120<span class="s">seg</span></button>
-    </div>
-
     <button class="btn btn-primary" id="startBtn">Empezar</button>
-
     <button class="how-toggle" id="howToggle">Como se juega</button>
     <div class="how" id="how">
       <h3>Reglas</h3>
       <ol>
         <li>Una persona sostiene el telefono <b>en la frente</b>, con la pantalla hacia afuera. Esa persona no ve al campeon.</li>
         <li>Los demas dan <b>pistas</b> (habilidades, lore, region) sin decir el nombre.</li>
-        <li>Cuando lo adivinen, inclina el cel hacia <b>abajo</b>. Para pasar, inclinalo hacia <b>arriba</b>.</li>
-        <li>Tambien puedes tocar la pantalla: lado <b>derecho</b> es correcto, lado <b>izquierdo</b> es saltar.</li>
-        <li>Tienen el tiempo elegido. A ver cuantos aciertan, y luego pasan el cel al siguiente.</li>
+        <li>Cuando lo adivinen, alguien toca <b>Correcto</b>. Si no sale, toca <b>Saltar</b> para pasar al siguiente.</li>
+        <li>No hay tiempo, jueguen los que quieran. Al final ven el resumen y pasan el cel al siguiente.</li>
       </ol>
     </div>
-
     <div class="src-note">Imagenes via Data Dragon de Riot Games</div>
   </section>
 
@@ -310,39 +200,30 @@
 
   <!-- GAME -->
   <section class="screen" id="game">
-    <img class="champ-img" id="champImg" alt="" />
-    <div class="img-fallback" id="imgFallback"><span>Imagen no disponible</span></div>
-    <div class="scrim-top"></div>
-    <div class="scrim-bot"></div>
-
-    <div class="tapzones" id="tapzones">
-      <div class="tz" data-act="skip"></div>
-      <div class="tz" data-act="correct"></div>
-    </div>
-    <div class="tz-hint l">◂ Saltar</div>
-    <div class="tz-hint r">Correcto ▸</div>
-
-    <div class="topbar">
-      <button class="quit" id="quitBtn">Salir</button>
+    <div class="game-top">
+      <button class="quit" id="quitBtn">Terminar</button>
       <div class="score-pill" id="scorePill">0 aciertos</div>
     </div>
-
-    <div class="timer-wrap">
-      <div class="timer" id="timer"><span class="t" id="timerT">90</span></div>
+    <div class="img-area">
+      <img class="champ-img" id="champImg" alt="" />
+      <div class="img-fallback" id="imgFallback"><span>Imagen no disponible</span></div>
+      <div class="img-fade"></div>
+      <div class="name-band">
+        <div class="champ-name display" id="champName">Campeon</div>
+        <div class="champ-tag" id="champTag">da una pista</div>
+      </div>
     </div>
-
-    <div class="name-wrap">
-      <div class="champ-name display" id="champName">Campeon</div>
-      <div class="champ-tag" id="champTag"></div>
+    <div class="controls">
+      <button class="ctrl ctrl-skip" id="skipBtn"><span class="ic">&#10005;</span>Saltar</button>
+      <button class="ctrl ctrl-ok" id="okBtn"><span class="ic">&#10003;</span>Correcto</button>
     </div>
-
     <div class="flash" id="flash"><span class="word" id="flashWord"></span></div>
   </section>
 
   <!-- RESULTS -->
   <section class="screen" id="results">
-    <div class="res-eyebrow">Fin de la ronda</div>
-    <div class="res-big"><span class="res-num" id="resNum">0</span></div>
+    <div class="res-eyebrow">Resumen</div>
+    <span class="res-num display" id="resNum">0</span>
     <div class="res-of">aciertos</div>
     <div class="res-tagline" id="resTagline"></div>
     <div class="res-grid" id="resGrid"></div>
@@ -359,15 +240,14 @@
 (function(){
   "use strict";
 
-  // viewport meta for correct mobile scaling
   if(!document.querySelector('meta[name=viewport]')){
     var m=document.createElement('meta');
     m.name='viewport'; m.content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
     document.head.appendChild(m);
   }
 
-  // ---- champion data (versionless loading art needs only the id) ----
-  var ART="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
+  // splash art is high resolution (1215x717), so it stays sharp on phones
+  var ART="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/";
   function artURL(id){ return ART + id + "_0.jpg"; }
 
   var FALLBACK=[
@@ -416,9 +296,8 @@
     {id:"Zoe",name:"Zoe"},{id:"Zyra",name:"Zyra"}
   ];
 
-  var champions = FALLBACK.slice();
+  var champions=FALLBACK.slice();
 
-  // try to refresh the list from Riot for newest champs, but never block the game
   function fetchTimeout(url, ms){
     return Promise.race([
       fetch(url).then(function(r){ if(!r.ok) throw 0; return r.json(); }),
@@ -430,29 +309,20 @@
       .then(function(v){ return fetchTimeout("https://ddragon.leagueoflegends.com/cdn/"+v[0]+"/data/en_US/champion.json", 3500); })
       .then(function(d){
         var list=[]; for(var k in d.data){ list.push({ id:d.data[k].id, name:d.data[k].name }); }
-        if(list.length > 30) champions = list;
+        if(list.length>30) champions=list;
       })
-      .catch(function(){ /* keep fallback */ });
+      .catch(function(){});
   })();
 
-  // ---- elements ----
   var $=function(id){ return document.getElementById(id); };
   var app=$("app");
   var screens={ start:$("start"), count:$("count"), game:$("game"), results:$("results") };
   var champImg=$("champImg"), imgFallback=$("imgFallback");
-  var champName=$("champName"), champTag=$("champTag");
-  var timerEl=$("timer"), timerT=$("timerT");
-  var scorePill=$("scorePill"), flash=$("flash"), flashWord=$("flashWord");
+  var champName=$("champName"), scorePill=$("scorePill"), flash=$("flash"), flashWord=$("flashWord");
 
-  // ---- state ----
   var state="start";
-  var roundTime=90;
   var deck=[], pos=0, results=[], score=0;
-  var timeLeft=90, ticker=null;
-  var locked=false;        // brief lock after each answer
-  var tiltReady=true;      // re-armed when phone returns to neutral
-  var tiltLockUntil=0;     // ignore tilt right after a round starts
-  var soundOn=true, audioCtx=null;
+  var locked=false, soundOn=true, audioCtx=null;
 
   function show(name){
     for(var k in screens){ screens[k].classList.remove("active"); }
@@ -461,55 +331,24 @@
     app.classList.toggle("playing", name==="game");
   }
 
-  // ---- audio ----
-  function initAudio(){
-    try{
-      audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
-      if(audioCtx.state==="suspended") audioCtx.resume();
-    }catch(e){}
-  }
+  // audio
+  function initAudio(){ try{ audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended") audioCtx.resume(); }catch(e){} }
   function tone(freq, dur, type, vol){
-    if(!soundOn || !audioCtx) return;
+    if(!soundOn||!audioCtx) return;
     try{
       var o=audioCtx.createOscillator(), g=audioCtx.createGain();
       o.type=type||"sine"; o.frequency.value=freq; o.connect(g); g.connect(audioCtx.destination);
-      var t=audioCtx.currentTime; g.gain.setValueAtTime(vol||0.2, t);
-      g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+      var t=audioCtx.currentTime; g.gain.setValueAtTime(vol||0.2, t); g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
       o.start(t); o.stop(t+dur);
     }catch(e){}
   }
   function sndCorrect(){ tone(660,0.12,"triangle",0.28); setTimeout(function(){ tone(950,0.16,"triangle",0.28); },85); }
   function sndSkip(){ tone(200,0.2,"sawtooth",0.16); }
-  function sndTick(){ tone(500,0.05,"square",0.1); }
   function sndGo(){ tone(523,0.12,"triangle",0.22); }
   function vibe(p){ if(navigator.vibrate){ try{ navigator.vibrate(p); }catch(e){} } }
 
-  // ---- tilt ----
-  function handleOrientation(e){
-    if(state!=="playing" || e.beta==null) return;
-    var b=e.beta;
-    if(b>58 && b<122){ tiltReady=true; }        // neutral re-arms
-    if(!tiltReady || locked || Date.now()<tiltLockUntil) return;
-    if(b<=48){ tiltReady=false; answer(true); }       // tilt down = correct
-    else if(b>=132){ tiltReady=false; answer(false); } // tilt up = skip
-  }
-  function enableTilt(){
-    try{
-      if(typeof DeviceOrientationEvent!=="undefined" && typeof DeviceOrientationEvent.requestPermission==="function"){
-        DeviceOrientationEvent.requestPermission().then(function(res){
-          if(res==="granted") window.addEventListener("deviceorientation", handleOrientation, true);
-        }).catch(function(){});
-      } else if(typeof DeviceOrientationEvent!=="undefined"){
-        window.addEventListener("deviceorientation", handleOrientation, true);
-      }
-    }catch(e){}
-  }
-
-  // ---- deck ----
-  function shuffle(a){
-    for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
-    return a;
-  }
+  // deck
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
   function preload(i){ if(deck[i]){ var im=new Image(); im.src=artURL(deck[i].id); } }
 
   function showChampion(){
@@ -517,89 +356,54 @@
     var c=deck[pos];
     imgFallback.style.display="none";
     champImg.style.display="block";
-    champImg.classList.remove("reveal");
-    void champImg.offsetWidth;
+    champImg.classList.remove("reveal"); void champImg.offsetWidth;
     champImg.onerror=function(){ champImg.style.display="none"; imgFallback.style.display="flex"; };
     champImg.src=artURL(c.id);
     champImg.classList.add("reveal");
     champName.textContent=c.name;
-    champTag.textContent="da una pista";
     preload(pos+1);
   }
 
   function answer(correct){
-    if(state!=="playing" || locked) return;
+    if(state!=="playing"||locked) return;
     locked=true;
     var c=deck[pos];
     results.push({ id:c.id, name:c.name, correct:correct });
     if(correct){ score++; scorePill.textContent=score+(score===1?" acierto":" aciertos"); }
     doFlash(correct);
-    if(correct){ sndCorrect(); vibe(60); } else { sndSkip(); vibe([30,40,30]); }
+    if(correct){ sndCorrect(); vibe(55); } else { sndSkip(); vibe([25,35,25]); }
     pos++;
-    setTimeout(function(){ if(state==="playing"){ showChampion(); locked=false; } }, 320);
+    setTimeout(function(){ if(state==="playing"){ showChampion(); locked=false; } }, 300);
   }
 
   function doFlash(correct){
-    flash.className="flash";
-    void flash.offsetWidth;
+    flash.className="flash"; void flash.offsetWidth;
     flashWord.textContent = correct ? "CORRECTO" : "SALTAR";
     flash.classList.add(correct?"correct":"skip","go");
   }
 
-  // ---- timer ----
-  function setTimer(s){
-    timeLeft=s; timerT.textContent=s;
-    var pct=Math.max(0, (s/roundTime)*100);
-    timerEl.style.setProperty("--p", pct+"%");
-    timerEl.classList.toggle("low", s<=10);
-  }
-  function startTimer(){
-    setTimer(roundTime);
-    ticker=setInterval(function(){
-      timeLeft--;
-      setTimer(timeLeft);
-      if(timeLeft<=5 && timeLeft>0) sndTick();
-      if(timeLeft<=0){ endRound(); }
-    }, 1000);
-  }
-  function stopTimer(){ if(ticker){ clearInterval(ticker); ticker=null; } }
-
-  // ---- flow ----
+  // flow
   function beginCountdown(){
     initAudio();
-    enableTilt();
-    deck=shuffle(champions.slice());
-    pos=0; results=[]; score=0;
+    deck=shuffle(champions.slice()); pos=0; results=[]; score=0;
     scorePill.textContent="0 aciertos";
     preload(0); preload(1);
     show("count");
     var n=3, el=$("countNum");
-    function step(){
-      if(n>0){
-        el.textContent=n; el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
-        sndGo(); n--; setTimeout(step, 900);
-      } else {
-        el.textContent="YA"; el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
-        tone(700,0.18,"triangle",0.25);
-        setTimeout(startRound, 650);
-      }
-    }
-    step();
+    (function step(){
+      if(n>0){ el.textContent=n; el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); sndGo(); n--; setTimeout(step,850); }
+      else { el.textContent="YA"; el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); tone(700,0.18,"triangle",0.25); setTimeout(startRound,600); }
+    })();
   }
 
   function startRound(){
     show("game");
-    locked=false; tiltReady=true;
-    tiltLockUntil=Date.now()+900;
+    locked=false;
     showChampion();
-    startTimer();
-    app.classList.add("show-hints");
-    setTimeout(function(){ app.classList.remove("show-hints"); }, 3200);
   }
 
-  function endRound(){
-    stopTimer();
-    if(navigator.vibrate) vibe([80,60,80]);
+  function endGame(){
+    if(navigator.vibrate) vibe([70,50,70]);
     tone(440,0.2,"triangle",0.2); setTimeout(function(){ tone(330,0.3,"triangle",0.2); },160);
     buildResults();
     show("results");
@@ -607,10 +411,9 @@
 
   function buildResults(){
     $("resNum").textContent=score;
-    var total=results.length;
-    var msg;
-    if(total===0){ msg="Ni un campeon. La proxima inclinen el cel para pasar."; }
-    else if(score===0){ msg="Cero aciertos de "+total+". Toca revisar el lore jeje."; }
+    var total=results.length, msg;
+    if(total===0){ msg="No jugaron ninguno todavia."; }
+    else if(score===0){ msg="Cero de "+total+". Toca repasar el lore jeje."; }
     else if(score/total>=0.7){ msg="Crackazos. "+score+" de "+total+" intentados."; }
     else if(score>=10){ msg="Nada mal, "+score+" campeones acertados."; }
     else { msg=score+" de "+total+" intentados. A ver si el siguiente le gana."; }
@@ -618,10 +421,8 @@
 
     var grid=$("resGrid"); grid.innerHTML="";
     results.forEach(function(r){
-      var card=document.createElement("div");
-      card.className="res-card "+(r.correct?"ok":"no");
-      var img=document.createElement("img"); img.src=artURL(r.id); img.alt=r.name;
-      img.onerror=function(){ this.style.display="none"; };
+      var card=document.createElement("div"); card.className="res-card "+(r.correct?"ok":"no");
+      var img=document.createElement("img"); img.src=artURL(r.id); img.alt=r.name; img.onerror=function(){ this.style.display="none"; };
       var mark=document.createElement("div"); mark.className="mark"; mark.textContent=r.correct?"\u2713":"\u2715";
       var nm=document.createElement("div"); nm.className="nm"; nm.textContent=r.name;
       card.appendChild(img); card.appendChild(mark); card.appendChild(nm);
@@ -629,65 +430,35 @@
     });
   }
 
-  // ---- toast ----
+  // toast
   var toastEl=$("toast"), toastTimer=null;
-  function toast(msg){
-    toastEl.textContent=msg; toastEl.classList.add("show");
-    clearTimeout(toastTimer); toastTimer=setTimeout(function(){ toastEl.classList.remove("show"); }, 1800);
-  }
+  function toast(msg){ toastEl.textContent=msg; toastEl.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ toastEl.classList.remove("show"); },1800); }
 
-  // ---- events ----
-  $("times").addEventListener("click", function(e){
-    var b=e.target.closest(".chip"); if(!b) return;
-    var chips=this.querySelectorAll(".chip");
-    for(var i=0;i<chips.length;i++) chips[i].classList.remove("sel");
-    b.classList.add("sel");
-    roundTime=parseInt(b.getAttribute("data-t"),10);
-  });
-
+  // events
   $("howToggle").addEventListener("click", function(){
     var h=$("how"); h.classList.toggle("open");
     this.textContent = h.classList.contains("open") ? "Ocultar" : "Como se juega";
   });
-
   $("startBtn").addEventListener("click", beginCountdown);
-
-  $("tapzones").addEventListener("click", function(e){
-    if(state!=="playing") return;
-    var z=e.target.closest(".tz"); if(!z) return;
-    answer(z.getAttribute("data-act")==="correct");
-  });
-
-  $("quitBtn").addEventListener("click", function(e){
-    e.stopPropagation();
-    stopTimer();
-    buildResults();
-    show("results");
-  });
-
+  $("okBtn").addEventListener("click", function(){ answer(true); });
+  $("skipBtn").addEventListener("click", function(){ answer(false); });
+  $("quitBtn").addEventListener("click", endGame);
   $("againBtn").addEventListener("click", beginCountdown);
-
   $("shareBtn").addEventListener("click", function(){
     var total=results.length;
     var txt="Acerte "+score+(total?(" de "+total):"")+" campeones de LoL en Headbands. Le ganas?";
-    if(navigator.share){
-      navigator.share({ title:"Headbands LoL", text:txt }).catch(function(){});
-    } else if(navigator.clipboard){
-      navigator.clipboard.writeText(txt).then(function(){ toast("Resultado copiado"); }).catch(function(){ toast(txt); });
-    } else { toast(txt); }
+    if(navigator.share){ navigator.share({ title:"Headbands LoL", text:txt }).catch(function(){}); }
+    else if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(function(){ toast("Resultado copiado"); }).catch(function(){ toast(txt); }); }
+    else { toast(txt); }
   });
 
-  // keyboard support for desktop testing
   window.addEventListener("keydown", function(e){
     if(state!=="playing") return;
-    if(e.key==="ArrowRight" || e.key===" "){ e.preventDefault(); answer(true); }
+    if(e.key==="ArrowRight"||e.key===" "){ e.preventDefault(); answer(true); }
     else if(e.key==="ArrowLeft"){ e.preventDefault(); answer(false); }
   });
 
-  // avoid pull-to-refresh / scroll bounce stealing tilt gestures during play
-  document.addEventListener("touchmove", function(e){
-    if(state==="game") e.preventDefault();
-  }, { passive:false });
+  document.addEventListener("touchmove", function(e){ if(state==="game") e.preventDefault(); }, { passive:false });
 
 })();
 </script>
