@@ -365,7 +365,7 @@
   }
 
   function answer(correct){
-    if(state!=="playing"||locked) return;
+    if(state!=="game"||locked) return;
     locked=true;
     var c=deck[pos];
     results.push({ id:c.id, name:c.name, correct:correct });
@@ -373,7 +373,7 @@
     doFlash(correct);
     if(correct){ sndCorrect(); vibe(55); } else { sndSkip(); vibe([25,35,25]); }
     pos++;
-    setTimeout(function(){ if(state==="playing"){ showChampion(); locked=false; } }, 300);
+    setTimeout(function(){ if(state==="game"){ showChampion(); locked=false; } }, 300);
   }
 
   function doFlash(correct){
@@ -453,7 +453,7 @@
   });
 
   window.addEventListener("keydown", function(e){
-    if(state!=="playing") return;
+    if(state!=="game") return;
     if(e.key==="ArrowRight"||e.key===" "){ e.preventDefault(); answer(true); }
     else if(e.key==="ArrowLeft"){ e.preventDefault(); answer(false); }
   });
